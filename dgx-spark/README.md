@@ -15,7 +15,8 @@ not switch Claude Code slots automatically.
 | Context | 262,144 tokens |
 | Static memory fraction | 0.70 |
 | Minimum available host memory | 96 GiB |
-| Thinking through Claude route | off |
+| Thinking default | off at the SGLang server |
+| Thinking through Claude route | off and enforced again by CLIProxyAPI |
 
 The upstream recipe advertises a 1,048,576-token context at a static memory
 fraction of 0.8. This fork begins lower to establish stability on the shared
@@ -55,8 +56,8 @@ restart automatically after a configuration or allocation failure.
 ./smoke-test.sh http://127.0.0.1:30001 spark2.5
 ```
 
-The smoke test checks model discovery, thinking-off output, streaming, and a
-tool-call request.
+The smoke test checks model discovery, server-default thinking-off output
+without request-level template arguments, streaming, and a tool-call request.
 
 ## CLIProxyAPI bridge for Claude Code
 
@@ -81,11 +82,14 @@ curl -fsS http://127.0.0.1:8319/v1/messages \
   -d '{"model":"spark25/spark-x2.5-4b","max_tokens":64,"messages":[{"role":"user","content":"Reply with exactly SPARK25_OK"}]}'
 ```
 
-The proxy configuration overrides
+The SGLang launcher defaults `enable_thinking=false` for every request. The
+proxy configuration also overrides
 `chat_template_kwargs.enable_thinking=false` after translating the Claude
 request to the OpenAI chat-completions upstream. It also advertises only the
 `none` thinking level, preventing clients from silently requesting unsupported
-effort levels.
+effort levels. The duplicate enforcement is intentional: direct clients no
+longer fall back to the model template's thinking-on default, while the Claude
+route remains fail-safe after protocol translation.
 
 ## Expanding context
 

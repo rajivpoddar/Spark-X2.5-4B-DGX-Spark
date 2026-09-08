@@ -8,8 +8,9 @@ curl -fsS "${BASE_URL}/v1/models" | grep -q "$MODEL"
 
 response=$(curl -fsS "${BASE_URL}/v1/chat/completions" \
   -H 'content-type: application/json' \
-  -d "{\"model\":\"${MODEL}\",\"max_tokens\":32,\"temperature\":0,\"chat_template_kwargs\":{\"enable_thinking\":false},\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly SPARK25_OK\"}]}")
+  -d "{\"model\":\"${MODEL}\",\"max_tokens\":32,\"temperature\":0,\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly SPARK25_OK\"}]}")
 grep -q 'SPARK25_OK' <<<"$response"
+python3 -c 'import json, sys; message=json.load(sys.stdin)["choices"][0]["message"]; assert message.get("reasoning_content") in (None, ""), message' <<<"$response"
 
 curl -fsS -N "${BASE_URL}/v1/chat/completions" \
   -H 'content-type: application/json' \

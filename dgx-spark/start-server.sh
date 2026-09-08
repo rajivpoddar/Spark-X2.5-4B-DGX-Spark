@@ -51,6 +51,7 @@ exec docker run --rm \
     --served-model-name "$SPARK25_SERVED_MODEL" \
     --tool-call-parser spark25 \
     --reasoning-parser qwen3 \
+    --default-chat-template-kwargs '{"enable_thinking":false}' \
     --tp-size 1 \
     --mem-fraction-static "$SPARK25_MEM_FRACTION" \
     --context-length "$SPARK25_CONTEXT" \
