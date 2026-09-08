@@ -12,10 +12,10 @@ response=$(curl -fsS "${BASE_URL}/v1/chat/completions" \
 grep -q 'SPARK25_OK' <<<"$response"
 python3 -c 'import json, sys; message=json.load(sys.stdin)["choices"][0]["message"]; assert message.get("reasoning_content") in (None, ""), message' <<<"$response"
 
-curl -fsS -N "${BASE_URL}/v1/chat/completions" \
+stream_response=$(curl -fsS -N "${BASE_URL}/v1/chat/completions" \
   -H 'content-type: application/json' \
-  -d "{\"model\":\"${MODEL}\",\"stream\":true,\"max_tokens\":16,\"temperature\":0,\"chat_template_kwargs\":{\"enable_thinking\":false},\"messages\":[{\"role\":\"user\",\"content\":\"Reply OK\"}]}" \
-  | grep -q 'data:'
+  -d "{\"model\":\"${MODEL}\",\"stream\":true,\"max_tokens\":16,\"temperature\":0,\"chat_template_kwargs\":{\"enable_thinking\":false},\"messages\":[{\"role\":\"user\",\"content\":\"Reply OK\"}]}")
+grep -q 'data:' <<<"$stream_response"
 
 curl -fsS "${BASE_URL}/v1/chat/completions" \
   -H 'content-type: application/json' \
