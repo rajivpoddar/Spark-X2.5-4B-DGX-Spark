@@ -39,6 +39,10 @@ sudo ./install-service.sh
 sudo systemctl start spark-x25-sglang.service
 ```
 
+The installer deliberately leaves the unit disabled. After the staged service
+has passed validation and should survive reboots, enable it explicitly with
+`sudo systemctl enable spark-x25-sglang.service`.
+
 The launcher refuses to start if port 30001 is already occupied, the model is
 incomplete, or another container already owns the configured name.
 

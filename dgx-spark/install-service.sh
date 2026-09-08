@@ -22,6 +22,6 @@ fi
 install -m 0644 "$INSTALL_DIR/systemd/spark-x25-sglang.service" \
   /etc/systemd/system/spark-x25-sglang.service
 systemctl daemon-reload
-systemctl enable spark-x25-sglang.service
 
-echo "installed spark-x25-sglang.service; start it explicitly after validation"
+echo "installed spark-x25-sglang.service without enabling it"
+echo "start it explicitly, validate it, then enable it only if it should survive reboots"
