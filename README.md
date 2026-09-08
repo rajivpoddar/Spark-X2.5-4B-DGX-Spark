@@ -3,6 +3,22 @@
 </p>
 <h1 align="center">Spark-X2.5</h1>
 
+## DGX Spark fork
+
+This fork adds an isolated, conservative deployment profile for testing
+Spark-X2.5-4B on one NVIDIA DGX Spark without replacing an existing inference
+service:
+
+- SGLang is pinned to the upstream-tested CUDA 13 image.
+- The test server listens on port `30001` with TP=1, a 262,144-token context,
+  and `0.70` static memory allocation.
+- Thinking is disabled for the Claude Code route by a dedicated, loopback-only
+  CLIProxyAPI instance on port `8319`.
+- No generation request is retried automatically.
+
+See [`dgx-spark/README.md`](dgx-spark/README.md) for deployment, validation,
+rollback, and later context-expansion instructions.
+
 <div align="center">
   
 [![Slack](https://img.shields.io/badge/Slack-Join-4A154B?logo=slack&logoColor=white)](https://join.slack.com/t/tokenspark/shared_invite/zt-432qf8l2f-5~dLyXv8uETr0P0UuC07nw)

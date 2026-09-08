@@ -1,0 +1,21 @@
+[Unit]
+Description=Spark-X2.5-4B SGLang test server
+After=docker.service network-online.target
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=user
+Group=user
+WorkingDirectory=/home/user/serve/spark-x25-dgx/dgx-spark
+Environment=SPARK25_ENV_FILE=/home/user/serve/spark-x25-dgx/dgx-spark/spark25.env
+ExecStart=/home/user/serve/spark-x25-dgx/dgx-spark/start-server.sh
+ExecStop=/usr/bin/docker stop -t 30 spark-x25-sglang
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=0
+TimeoutStopSec=45
+
+[Install]
+WantedBy=multi-user.target

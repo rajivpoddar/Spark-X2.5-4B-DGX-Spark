@@ -1,0 +1,57 @@
+# Dedicated loopback-only Anthropic adapter for Spark-X2.5 on the DGX Spark.
+host: "127.0.0.1"
+port: 8319
+
+tls:
+  enable: false
+  cert: ""
+  key: ""
+
+remote-management:
+  allow-remote: false
+  secret-key: ""
+  disable-control-panel: true
+
+auth-dir: "/Users/rajiv/.cli-proxy-api-spark25"
+api-keys:
+  - "local-spark25-loopback"
+
+debug: false
+logging-to-file: false
+usage-statistics-enabled: false
+commercial-mode: true
+proxy-url: ""
+request-retry: 0
+max-retry-credentials: 1
+disable-cooling: true
+transient-error-cooldown-seconds: -1
+
+openai-compatibility:
+  - name: "dgx-spark-x25"
+    disabled: false
+    prefix: "spark25"
+    base-url: "http://192.168.68.113:30001/v1"
+    disable-cooling: true
+    api-key-entries:
+      - api-key: "local-dgx-no-auth"
+        proxy-url: "direct"
+    models:
+      - name: "spark2.5"
+        alias: "spark-x2.5-4b"
+        max-context-length: 262144
+        input-modalities: [text]
+        output-modalities: [text]
+        thinking:
+          levels: [none]
+
+# Claude requests are translated to OpenAI chat completions. Force the model's
+# chat-template switch off after translation, regardless of client defaults.
+payload:
+  override:
+    - models:
+        - name: "spark2.5"
+        - name: "spark-x2.5-4b"
+        - name: "spark25/spark-x2.5-4b"
+      protocol: "openai"
+      params:
+        "chat_template_kwargs.enable_thinking": false
