@@ -34,6 +34,7 @@ Today, we are introducing Spark-X2.5-4B and Spark-X2.5-1.7B, two compact, genera
 
 ## Release
 
+- [2026/09/06] 🤝 Added native model architecture support for Spark‑X2.5 (Spark2_5ForCausalLM) in [llama.cpp](https://github.com/ggml-org/llama.cpp/releases/tag/b10829).
 - [2026/09/04] 🚀 Released FP8 and INT8 quantized versions of Spark-X2.5-4B and Spark-X2.5-1.7B.
 - [2026/09/03] 🤝 Added deployment support for vLLM and SGLang on Ascend NPU.
 - [2026/09/02] 🚀 Added [AtomGit](https://ai.atomgit.com/collections/2095030878254981121) as a new distribution channel.
@@ -415,7 +416,7 @@ spark-mlx-generate \
 #### Build
 
 ```bash
-git clone https://github.com/XHToken/llama.cpp.git llama.cpp-spark
+git clone -b b10828 https://github.com/ggml-org/llama.cpp.git llama.cpp-spark
 git clone https://github.com/ollama/ollama.git ollama-spark
 cd ollama-spark
 export OLLAMA_LLAMA_CPP_SOURCE="$(cd ../llama.cpp-spark && pwd)"
@@ -444,7 +445,7 @@ Create and run the model from another terminal:
 #### Build
 
 ```bash
-git clone https://github.com/XHToken/llama.cpp.git llama.cpp-spark
+git clone -b b10828 https://github.com/ggml-org/llama.cpp.git llama.cpp-spark
 cd llama.cpp-spark
 cmake -S . -B build
 cmake --build build --parallel 8
