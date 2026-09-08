@@ -12,6 +12,16 @@ fi
 # shellcheck disable=SC1090
 source "$ENV_FILE"
 
+min_available_gib=${SPARK25_MIN_AVAILABLE_GIB:-96}
+available_kib=$(awk '/^MemAvailable:/ { print $2 }' /proc/meminfo)
+required_kib=$((min_available_gib * 1024 * 1024))
+if (( available_kib < required_kib )); then
+  available_gib=$((available_kib / 1024 / 1024))
+  echo "refusing to start Spark-X2.5: ${available_gib} GiB available, ${min_available_gib} GiB required" >&2
+  echo "stop the active inference backend in a maintenance window before retrying" >&2
+  exit 1
+fi
+
 for required in config.json chat_template.jinja; do
   if [[ ! -s "${SPARK25_MODEL_DIR}/${required}" ]]; then
     echo "model is incomplete: missing ${SPARK25_MODEL_DIR}/${required}" >&2

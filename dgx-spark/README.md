@@ -14,6 +14,7 @@ not switch Claude Code slots automatically.
 | Tensor parallelism | 1 |
 | Context | 262,144 tokens |
 | Static memory fraction | 0.70 |
+| Minimum available host memory | 96 GiB |
 | Thinking through Claude route | off |
 
 The upstream recipe advertises a 1,048,576-token context at a static memory
@@ -43,8 +44,10 @@ The installer deliberately leaves the unit disabled. After the staged service
 has passed validation and should survive reboots, enable it explicitly with
 `sudo systemctl enable spark-x25-sglang.service`.
 
-The launcher refuses to start if port 30001 is already occupied, the model is
-incomplete, or another container already owns the configured name.
+The launcher refuses to start if less than 96 GiB of unified memory is
+available, port 30001 is already occupied, the model is incomplete, or another
+container already owns the configured name. The staged systemd unit does not
+restart automatically after a configuration or allocation failure.
 
 ## Direct validation
 

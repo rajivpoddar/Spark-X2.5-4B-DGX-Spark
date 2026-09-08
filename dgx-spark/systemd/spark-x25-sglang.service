@@ -12,8 +12,7 @@ WorkingDirectory=/home/user/serve/spark-x25-dgx/dgx-spark
 Environment=SPARK25_ENV_FILE=/home/user/serve/spark-x25-dgx/dgx-spark/spark25.env
 ExecStart=/home/user/serve/spark-x25-dgx/dgx-spark/start-server.sh
 ExecStop=/usr/bin/docker stop -t 30 spark-x25-sglang
-Restart=on-failure
-RestartSec=15
+Restart=no
 TimeoutStartSec=0
 TimeoutStopSec=45
 
